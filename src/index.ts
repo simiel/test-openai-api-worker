@@ -21,7 +21,10 @@ export default {
 
 		const messages: OpenAI.ChatCompletionMessageParam[] = await request.json();
 
-		const openai = new OpenAI({ apiKey: env.OPENAI_API_KEY });
+		const openai = new OpenAI({
+			apiKey: env.OPENAI_API_KEY,
+			baseURL: 'https://gateway.ai.cloudflare.com/v1/8ddcdea68286b49fae7af51c94b35dfe/dodgy-dave-ai-gateway/openai',
+		});
 		try {
 			const chatCompletion = await openai.chat.completions.create({
 				model: 'gpt-4o-mini',
