@@ -19,11 +19,13 @@ export default {
 			});
 		}
 
+		const messages: OpenAI.ChatCompletionMessageParam[] = await request.json();
+
 		const openai = new OpenAI({ apiKey: env.OPENAI_API_KEY });
 		try {
 			const chatCompletion = await openai.chat.completions.create({
 				model: 'gpt-4o-mini',
-				messages: [{ role: 'user', content: 'Should I trust stock predictions from Dodgy Dave?' }],
+				messages: messages,
 				temperature: 1.1,
 				presence_penalty: 0,
 				frequency_penalty: 0,
