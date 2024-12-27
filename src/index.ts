@@ -1,18 +1,25 @@
-/**
- * Welcome to Cloudflare Workers! This is your first worker.
- *
- * - Run `npm run dev` in your terminal to start a development server
- * - Open a browser tab at http://localhost:8787/ to see your worker in action
- * - Run `npm run deploy` to publish your worker
- *
- * Bind resources to your worker in `wrangler.toml`. After adding bindings, a type definition for the
- * `Env` object can be regenerated with `npm run cf-typegen`.
- *
- * Learn more at https://developers.cloudflare.com/workers/
- */
+import OpenAI from 'openai';
+
+interface Env {
+	OPENAI_API_KEY: string;
+}
 
 export default {
-	async fetch(request, env, ctx): Promise<Response> {
-		return new Response('Hello World!, from your favorite neighborhood software engineer');
+	async fetch(request, env: Env, ctx): Promise<Response> {
+		const openai = new OpenAI({ apiKey: env.OPENAI_API_KEY });
+		try {
+			const chatCompletion = await openai.chat.completions.create({
+				model: 'gpt-4o-mini',
+				messages: [{ role: 'user', content: 'Should I trust stock predictions from Dodgy Dave?' }],
+				temperature: 1.1,
+				presence_penalty: 0,
+				frequency_penalty: 0,
+			});
+
+			const response = chatCompletion.choices[0].message.content;
+			return new Response(JSON.stringify(response));
+		} catch (error: any) {
+			return new Response(error, { status: 500 });
+		}
 	},
 } satisfies ExportedHandler<Env>;
