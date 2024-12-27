@@ -19,6 +19,11 @@ export default {
 			});
 		}
 
+		// Only process POST requests
+		if (request.method !== 'POST') {
+			return new Response(JSON.stringify({ error: `${request.method} method not allowed.` }), { status: 405, headers: corsHeaders });
+		}
+
 		const messages: OpenAI.ChatCompletionMessageParam[] = await request.json();
 
 		const openai = new OpenAI({
