@@ -39,7 +39,7 @@ export default {
 				headers: corsHeaders,
 			});
 		} catch (error: any) {
-			return new Response(error, { headers: corsHeaders });
+			return new Response(JSON.stringify(error.message), { headers: corsHeaders, status: 500 });
 		}
 	},
 } satisfies ExportedHandler<Env>;
