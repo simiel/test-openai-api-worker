@@ -20,6 +20,7 @@ export default {
 		}
 
 		const messages: OpenAI.ChatCompletionMessageParam[] = await request.json();
+		console.log('🚀 ~ fetch ~ messages:', messages);
 
 		const openai = new OpenAI({ apiKey: env.OPENAI_API_KEY });
 		try {
@@ -32,6 +33,7 @@ export default {
 			});
 
 			const response = chatCompletion.choices[0].message.content;
+			console.log('🚀 ~ fetch ~ response:', response);
 			return new Response(JSON.stringify(response), {
 				headers: corsHeaders,
 			});
