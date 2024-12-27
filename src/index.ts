@@ -19,7 +19,7 @@ export default {
 			const response = chatCompletion.choices[0].message.content;
 			return new Response(JSON.stringify(response));
 		} catch (error: any) {
-			return new Response(error, { status: 500 });
+			return new Response(error);
 		}
 	},
 } satisfies ExportedHandler<Env>;
